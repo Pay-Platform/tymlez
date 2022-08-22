@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "exclude": ["node_modules", "coverage", "dist"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "moduleResolution": "node",
+    "composite": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "rootDir": "./src"
+  },
+  "references": [
+    {
+      "path": "../../packages/common-libs"
+    },
+    {
+      "path": "../../packages/backend-libs"
+    }
+  ],
+  "include": ["src"]
+}

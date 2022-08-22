@@ -1,0 +1,46 @@
+{
+  "name": "@tymlez/tymlez-cli",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "Tymlez <dev@tymlez.com>",
+  "description": "The common utility use for development and ci",
+  "scripts": {
+    "build": "tsc --build --force",
+    "cli": "node -r esbuild-register ./src/index.ts",
+    "watch": "tsc -w"
+  },
+  "bin": {
+    "tymlez-cli": "./dist/index.js",
+    "tymlez-cli-dev": "./src/index.ts"
+  },
+  "dependencies": {
+    "@tymlez/backend-libs": "*",
+    "@tymlez/common-libs": "*",
+    "aws-sdk": "^2.1126.0",
+    "chalk": "^5.0.1",
+    "date-fns": "^2.28.0",
+    "deepmerge": "^4.2.2",
+    "exec-sh": "^0.4.0",
+    "joi": "^17.5.0",
+    "lodash": "^4.17.21",
+    "md5": "^2.3.0",
+    "p-limit": "3.1.0",
+    "readline": "^1.3.0",
+    "uuid": "^8.3.2",
+    "yaml": "^2.0.1",
+    "yargs": "^17.4.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.5.0",
+    "@types/lodash": "^4.14.182",
+    "@types/md5": "^2.3.2",
+    "@types/node": "^14.18.16",
+    "@types/uuid": "^8.3.4",
+    "@types/yargs": "^17.0.10",
+    "esbuild": "^0.14.38",
+    "esbuild-jest": "^0.5.0",
+    "esbuild-register": "^3.3.2",
+    "jest": "^27.5.1",
+    "typescript": "^4.6.4"
+  }
+}

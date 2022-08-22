@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "preserve",
+    "composite": true,
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "paths": {
+      "@tymlez/common-libs": ["../../packages/common-libs/src/"]
+    }
+  },
+  "include": ["src", "tools"],
+  "exclude": ["node_modules", "coverage", "out"],
+  "references": [
+    {
+      "path": "../../packages/cohort-api-interfaces"
+    },
+    {
+      "path": "../../packages/common-libs"
+    },
+    {
+      "path": "../../packages/devias-material-kit"
+    },
+    {
+      "path": "../../packages/platform-api-interfaces"
+    }
+  ]
+}

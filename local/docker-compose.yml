@@ -1,0 +1,172 @@
+version: '3'
+services:
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8888:8080
+  mongo:
+    container_name: 'tymlez-dev-mongo'
+    image: mongo
+    restart: always
+    volumes:
+      - '.tmp/db-data:/data/db'
+    expose:
+      - 27017
+    ports:
+      - 27018:27017
+  postgres:
+    container_name: tymlez-dev-postgres
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./.tmp/psql-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-test}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-test}
+      POSTGRES_DB: ${DATABASE_NAME:-test}
+
+  redis:
+    container_name: tymlez-dev-redis
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+
+  redis-commander:
+    container_name: tymlez-dev-redis-cmd
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - '6380:8081'
+    depends_on:
+      - redis
+
+  meter-db:
+    container_name: tymlez-dev-meter-db
+    # The version should be the same as the `appVersion` in
+    # https://github.com/Tymlez/tymlez-terraform/blob/main/modules/questdb-gke-v2/tymlez-questdb/Chart.yaml
+    image: 'questdb/questdb:6.1.2'
+    ports:
+      - '9000:9000'
+      - '8812:8812'
+      - '9003:9003'
+    volumes:
+      - ./.tmp/meter-db-data:/root/.questdb/
+    environment:
+      QDB_PG_USER: ${METER_DB_USERNAME:-admin}
+      QDB_PG_PASSWORD: ${METER_DB_PASSWORD:-test}
+
+  localstack:
+    container_name: 'localstack'
+    image: localstack/localstack
+    ports:
+      - '127.0.0.1:4510-4559:4510-4559' # external service port range
+      - '4566-4583:4566-4583'
+    environment:
+      - AWS_DEFAULT_REGION=ap-southeast-2
+      - DEBUG=${DEBUG-}
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=s3
+      - EDGE_PORT=4566
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './.tmp/:/tmp/localstack'
+
+  tymlez-platform-dev:
+    container_name: 'tymlez-dev-tool'
+    build: .
+    image: tymlez-development
+    volumes:
+      - ../:/app
+    restart: on-failure
+    command: sh /app/local/dev.sh
+
+  tymlez-guardian-api:
+    container_name: 'tymlez-guardian-api'
+    image: tymlez-development
+    volumes:
+      - ../:/app
+      - ./docker.env:/app/guardian/tymlez-guardian-service/.env
+    depends_on:
+      - tymlez-platform-dev
+    environment:
+      - DATABASE_NAME=tymlez_db
+      - PORT=3010
+    ports:
+      - '3010:3010'
+    restart: on-failure
+    command: yarn --cwd guardian/tymlez-guardian-service start:dev
+
+  tymlez-platform-api:
+    container_name: 'tymlez-platform-api'
+    image: tymlez-development
+    volumes:
+      - ../:/app
+      - ./docker.env:/app/services/platform-middleware/.env
+    depends_on:
+      - localstack
+      - redis
+      - tymlez-platform-dev
+    environment:
+      - PORT=8080
+    ports:
+      - '8080:8080'
+    restart: on-failure
+    command: yarn --cwd services/platform-middleware start:dev
+
+  tymlez-client-api:
+    container_name: 'tymlez-client-api'
+    image: tymlez-development
+    volumes:
+      - ../:/app
+      - ./docker.env:/app/services/${CLIENT_NAME:-uon}-middleware/.env
+    depends_on:
+      - tymlez-platform-api
+    ports:
+      - '8082:8082'
+    restart: on-failure
+    command: yarn --cwd services/${CLIENT_NAME:-uon}-middleware start:dev
+
+  tymlez-client-web:
+    container_name: 'tymlez-client-web'
+    image: tymlez-development
+    environment:
+      - SWC_MINIFY=${SWC_MINIFY-:true}
+    volumes:
+      - ../:/app
+    depends_on:
+      - tymlez-platform-api
+    ports:
+      - '3001:3001'
+    command: yarn --cwd clients/${CLIENT_NAME:-uon}-web dev
+
+  platform-admin-web:
+    container_name: 'tymlez-admin-web'
+    image: tymlez-development
+    environment:
+      - SWC_MINIFY=${SWC_MINIFY-:true}
+    volumes:
+      - ../:/app
+    depends_on:
+      - tymlez-platform-api
+    ports:
+      - '3002:3000'
+    command: 'yarn --cwd clients/platform-admin-web dev'
+
+  nginx:
+    container_name: tymlez-dev-nginx
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - '3000:80'
+    depends_on:
+      - tymlez-client-web
+      - platform-admin-web

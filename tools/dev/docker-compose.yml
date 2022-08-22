@@ -1,0 +1,73 @@
+version: '3'
+services:
+  postgres:
+    container_name: tymlez-dev-postgres
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./.tmp/psql-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-test}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-test}
+      POSTGRES_DB: ${DATABASE_NAME:-test}
+
+  redis:
+    container_name: tymlez-dev-redis
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+
+  redis-commander:
+    container_name: tymlez-dev-redis-cmd
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - '6380:8081'
+    depends_on:
+      - redis
+
+  meter-db:
+    container_name: tymlez-dev-meter-db
+    # The version should be the same as the `appVersion` in
+    # https://github.com/Tymlez/tymlez-terraform/blob/main/modules/questdb-gke-v2/tymlez-questdb/Chart.yaml
+    image: 'questdb/questdb:6.1.2'
+    ports:
+      - '9000:9000'
+      - '8812:8812'
+      - '9003:9003'
+    volumes:
+      - ./.tmp/meter-db-data:/root/.questdb/
+    environment:
+      QDB_PG_USER: ${METER_DB_USERNAME:-admin}
+      QDB_PG_PASSWORD: ${METER_DB_PASSWORD:-test}
+  #  nginx:
+  #    container_name: tymlez-dev-nginx
+  #    image: nginx:alpine
+  #    volumes:
+  #      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #      - ./nginx/html:/usr/share/nginx/html:ro
+  #    ports:
+  #      - "8082:80"
+  #    environment:
+  #      - NGINX_HOST=tymlez-dev-nginx.local
+  #      - NGINX_PORT=80
+  localstack:
+    container_name: 'localstack'
+    image: localstack/localstack
+    ports:
+      - '127.0.0.1:4510-4559:4510-4559' # external service port range
+      - '4566-4583:4566-4583'
+    environment:
+      - AWS_DEFAULT_REGION=ap-southeast-2
+      - DEBUG=${DEBUG-}
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - SERVICES=s3
+      - EDGE_PORT=4566
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './.tmp/:/tmp/localstack'

@@ -1,0 +1,1 @@
+export type IQuantity = number & {};

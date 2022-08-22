@@ -1,0 +1,13 @@
+diff --git a/node_modules/pg-format/lib/index.js b/node_modules/pg-format/lib/index.js
+index 5cb94f6..8ebd86e 100644
+--- a/node_modules/pg-format/lib/index.js
++++ b/node_modules/pg-format/lib/index.js
+@@ -1,7 +1,7 @@
+ 'use strict';
+ 
+ // reserved Postgres words
+-var reservedMap = require(__dirname + '/reserved.js');
++var reservedMap = require('./reserved');
+ 
+ var fmtPattern = {
+     ident: 'I',

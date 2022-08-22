@@ -1,0 +1,1 @@
+export const VIRTUAL_DEVICE_ID = 'DD54108399431';

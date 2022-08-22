@@ -1,0 +1,18 @@
+.pageBreak {
+  page-break-after: always;
+  page-break-inside: avoid;
+}
+
+@media print {
+  .pageDisplayNone {
+    display: none;
+  }
+
+  .mt180 {
+    margin-top: 180px !important;
+  }
+
+  .mt160 {
+    margin-top: 160px !important;
+  }
+}

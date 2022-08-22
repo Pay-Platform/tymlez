@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "strictPropertyInitialization": false,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "noEmit": false
+  },
+  "exclude": ["node_modules/", "dist/", "coverage/"],
+  "references": [
+    {
+      "path": "../../packages/backend-libs"
+    },
+
+    {
+      "path": "../../packages/common-libs"
+    },
+    {
+      "path": "../../packages/platform-api-interfaces"
+    },
+    {
+      "path": "../../packages/cohort-api-interfaces"
+    }
+  ],
+  "include": ["src"]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "regionid": "NSW1",
+    "settlement_date": "2022-01-11T15:35:00+00:00",
+    "energy": "9296.055744",
+    "emission": "6166.383608719",
+    "factor": "0.66333333"
+  },
+  {
+    "regionid": "QLD1",
+    "settlement_date": "2022-01-11T15:35:00+00:00",
+    "energy": "6821.819872",
+    "emission": "4578.809479046",
+    "factor": "0.671200584"
+  },
+  {
+    "regionid": "TAS1",
+    "settlement_date": "2022-01-11T15:35:00+00:00",
+    "energy": "1019.150459",
+    "emission": "-2.352981856",
+    "factor": "-0.002308768"
+  },
+  {
+    "regionid": "SA1",
+    "settlement_date": "2022-01-11T15:35:00+00:00",
+    "energy": "2105.953424",
+    "emission": "825.922864498",
+    "factor": "0.392184773"
+  },
+  {
+    "regionid": "VIC1",
+    "settlement_date": "2022-01-11T15:35:00+00:00",
+    "energy": "6363.825479",
+    "emission": "5365.538062408",
+    "factor": "0.843130925"
+  }
+]

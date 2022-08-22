@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "guardian-tymlez-service.fullname" . }}-{{ .Release.Revision }}
+  namespace: {{ .Values.namespace }}
+data:
+  {{- toYaml .Values.configmap.data | nindent 2 }}
+  MQ_ADDRESS: {{ .Release.Name }}-guardian-message-broker-{{ .Release.Revision }}
+  MONGO_DB_CONNECTION: mongodb://{{ .Release.Name }}-mongodb:27017/tymlez_db
+  GUARDIAN_API_GW_URL: http://{{ .Release.Name }}-guardian-web-proxy:80/api/v1
+  DD_ENV: {{ .Values.configmap.data.ENV_NAME}}
+  DD_SERVICE:  {{ .Values.service_name}}
+  DD_VERSION: {{ .Values.version}}
+  DD_TRACE_ENABLED: "true"
+  DD_RUNTIME_METRICS_ENABLED: "true"
+  DD_PROFILING_ENABLED: "true" 
+  DD_LOGS_INJECTION: "true"
+  DD_TRACE_SAMPLE_RATE: "1"
+  DD_APPSEC_ENABLED: "true"
+  DD_APM_ENABLED: "true"
+  CLIENT_NAME: {{ .Values.configmap.data.CLIENT_NAME }}
+  DD_TAGS: "client_name:{{ .Values.configmap.data.CLIENT_NAME }}"

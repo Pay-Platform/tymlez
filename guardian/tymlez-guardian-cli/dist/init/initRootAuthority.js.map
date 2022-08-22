@@ -1,0 +1,1 @@
+{"version":3,"file":"initRootAuthority.js","sourceRoot":"","sources":["../../src/init/initRootAuthority.ts"],"names":[],"mappings":";;;;;;AAAA,kDAA0B;AAEnB,KAAK,UAAU,iBAAiB,CAAC,EACtC,uBAAuB,EACvB,gCAAgC,GAIjC;IACC,MAAM,eAAK,CAAC,IAAI,CACd,GAAG,gCAAgC,0BAA0B,EAC7D,EAAE,EACF;QACE,OAAO,EAAE;YACP,aAAa,EAAE,WAAW,uBAAuB,EAAE;SACpD;KACF,CACF,CAAC;AACJ,CAAC;AAhBD,8CAgBC"}

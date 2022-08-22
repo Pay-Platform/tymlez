@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": [
+    "packages/**/*.*", //
+    "clients/**/*.*",
+    "services/**/*.*",
+    "*.*"
+  ],
+  "exclude": [
+    "**/dist/", //
+    "**/coverage/",
+    "**/.servereless/",
+    "**/.esbuild/"
+  ]
+}

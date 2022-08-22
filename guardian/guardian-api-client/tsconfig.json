@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "exclude": ["node_modules/**/*", "coverage/", "dist/"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "noEmit": false,
+    "allowJs": false,
+    "checkJs": false,
+    "baseUrl": "./",
+    "noUnusedLocals": false,
+    "isolatedModules": false
+  },
+  "include": ["src"]
+}

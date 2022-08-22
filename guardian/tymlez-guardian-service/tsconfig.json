@@ -1,0 +1,32 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "strictPropertyInitialization": false,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "importsNotUsedAsValues": "error",
+    "skipLibCheck": true,
+    "composite": true,
+    "noEmit": false,
+    "paths": {
+      "@tymlez/common-libs": ["packages/common-libs/src"],
+      "@tymlez/backend-libs": ["packages/backend-libs/src"],
+      "@tymlez/guardian-api-client": ["../tymlez-guardian-service/src"]
+    }
+  },
+  "include": ["./src"],
+  "exclude": ["**/node_modules/", "dist/", "coverage/", "**/**/node_modules/"],
+  "references": [
+    {
+      "path": "../../packages/backend-libs"
+    },
+    {
+      "path": "../../packages/common-libs"
+    },
+    {
+      "path": "../guardian-api-client"
+    }
+  ]
+}

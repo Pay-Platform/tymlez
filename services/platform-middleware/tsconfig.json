@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "strictPropertyInitialization": false,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "noEmit": false,
+    "importsNotUsedAsValues": "remove",
+    "paths": {
+      "@tymlez/common-libs": ["packages/common-libs/src"],
+      "@tymlez/backend-libs": ["packages/backend-libs/src"]
+    }
+  },
+  "exclude": ["node_modules/", "dist/", "coverage/", "../../node_modules/"],
+  "references": [
+    {
+      "path": "../../packages/backend-libs"
+    },
+    {
+      "path": "../../packages/common-libs"
+    },
+    {
+      "path": "../../packages/platform-api-interfaces"
+    }
+  ],
+  "include": ["src"]
+}

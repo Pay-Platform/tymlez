@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "baseUrl": "./"
+  },
+  "exclude": [
+    "node_modules/",
+    "dist/",
+    "coverage/",
+    "e2e/",
+    "tools/",
+    "../../node_modules"
+  ]
+}

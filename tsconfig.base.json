@@ -1,0 +1,88 @@
+{
+  "extends": "@tsconfig/node14",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "pretty": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "allowUnreachableCode": false,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "removeComments": false,
+    "importsNotUsedAsValues": "error",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "baseUrl": "./"
+    // "paths": {
+    //   "@tymlez/common-libs": ["packages/common-libs/src"],
+    //   "@tymlez/backend-libs": ["packages/backend-libs/src"]
+    // }
+  },
+  "references": [
+    {
+      "path": "packages/backend-libs"
+    },
+    {
+      "path": "packages/cohort-api-interfaces"
+    },
+    {
+      "path": "packages/common-libs"
+    },
+    {
+      "path": "packages/devias-material-kit"
+    },
+
+    {
+      "path": "packages/platform-api-interfaces"
+    },
+    {
+      "path": "packages/test-libs"
+    },
+    {
+      "path": "clients/cohort-web-smoke"
+    },
+    {
+      "path": "clients/cohort-web"
+    },
+    {
+      "path": "clients/uon-web"
+    },
+    {
+      "path": "services/cohort-middleware"
+    },
+    {
+      "path": "services/platform-meter-collection"
+    },
+    {
+      "path": "services/platform-meter-ingestion"
+    },
+    {
+      "path": "services/platform-middleware"
+    },
+    {
+      "path": "services/tymlez-middleware"
+    },
+    {
+      "path": "services/uon-middleware"
+    }
+  ],
+  "files": [],
+  "exclude": ["node_modules", "dist", "coverage"]
+}

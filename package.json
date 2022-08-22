@@ -1,0 +1,65 @@
+{
+  "name": "tymlez-platform",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "start:core": "sh ./local/up.sh core",
+    "start:dev": "sh ./local/up.sh",
+    "prepare": "husky install",
+    "postinstall": "patch-package && yarn build-tools",
+    "dev:watch": "lerna run watch --parallel \"$@\"",
+    "bootstrap": "./local/bootstrap.sh",
+    "build-tools": "lerna run build --stream --concurrency ${CONCURRENCY:-2} --scope @tymlez/tymlez-cli --scope @tymlez/tymlez-guardian-cli",
+    "bootstrap:always": "lerna run bootstrap:always --stream --concurrency ${CONCURRENCY:-2} --include-dependencies",
+    "info:changed": "lerna exec 'echo changed' --stream --concurrency ${CONCURRENCY:-2}",
+    "lint": "yarn lint:eslint && lerna run lint --stream --concurrency ${CONCURRENCY:-2}",
+    "format": "yarn lint:eslint --fix",
+    "lint:eslint": "eslint $(echo ${ESLINT_FILES:-.} | xargs) --quiet --ext .js,.ts,.tsx",
+    "lint:eslint:enhanced": "NODE_OPTIONS=\"--max-old-space-size=4096\" eslint $(echo ${ESLINT_FILES:-.} | xargs) -c .eslintrc.full.js --quiet --ext .js,.ts,.tsx",
+    "release": "tymlez-cli monorepo release",
+    "test": "lerna run test --stream --concurrency ${CONCURRENCY:-2}",
+    "build:all": "lerna run build --stream --concurrency ${CONCURRENCY:-2}",
+    "test:smoke:client": "lerna run test:smoke::${CLIENT_NAME} --stream --concurrency ${CONCURRENCY:-2}",
+    "deploy:client": "lerna run deploy:${CLIENT_NAME} --stream --concurrency ${CONCURRENCY:-2}",
+    "deploy": "lerna run deploy --stream --concurrency ${CONCURRENCY:-2}"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@tymlez/platform-api-interfaces": "*",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "comment-json": "^4.2.2",
+    "esbuild": "^0.14.38",
+    "esbuild-register": "^3.3.2",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "husky": "^7.0.4",
+    "lerna": "^4.0.0",
+    "lint-staged": "^11.2.6",
+    "patch-package": "^6.4.7",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.4"
+  },
+  "resolutions": {
+    "@hashgraph/did-sdk-js/@hashgraph/sdk": "2.6.0"
+  },
+  "workspaces": [
+    "cli/*",
+    "packages/*",
+    "clients/*",
+    "services/*",
+    "guardian/*"
+  ],
+  "packageManager": "yarn@3.2.0",
+  "yarn": {
+    "args": [
+      "--ignore-engines"
+    ]
+  }
+}

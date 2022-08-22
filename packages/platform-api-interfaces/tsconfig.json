@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "skipDefaultLibCheck": false,
+    "skipLibCheck": false,
+    "noEmit": false,
+    "composite": true
+  },
+  "references": []
+}

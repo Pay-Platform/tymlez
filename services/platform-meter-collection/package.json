@@ -1,0 +1,53 @@
+{
+  "name": "@tymlez/platform-meter-collection",
+  "version": "1.0.0",
+  "description": "AWS Lambda Functions that collect data and publish to GCP pubsub",
+  "scripts": {
+    "test": "jest",
+    "test:functional": "yarn load-env && jest --setupFiles dotenv/config --testMatch '**/*.functional-test.(ts|tsx|js)'",
+    "tools": "./tools/bin/index.ts",
+    "deploy:cohort": "yarn load-env && yarn tools deploy",
+    "load-env": "yarn tools load-env"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "^2.18.4",
+    "@middy/core": "^1.5.2",
+    "@tymlez/backend-libs": "*",
+    "@tymlez/common-libs": "*",
+    "@tymlez/platform-api-interfaces": "*",
+    "@tymlez/tymlez-cli": "*",
+    "axios": "^0.27.2",
+    "change-case": "^4.1.2",
+    "date-fns": "^2.28.0",
+    "debug": "^4.3.3",
+    "lodash": "^4.17.21",
+    "pg": "^8.7.3",
+    "pg-format": "^1.0.4",
+    "source-map-support": "^0.5.21",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.15.0",
+    "@serverless/typescript": "^2.23.0",
+    "@sinonjs/fake-timers": "^8.1.0",
+    "@types/aws-lambda": "^8.10.83",
+    "@types/debug": "^4.1.7",
+    "@types/jest": "^27.5.0",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^14.18.16",
+    "@types/pg": "^8.6.5",
+    "@types/sinonjs__fake-timers": "^8.1.2",
+    "@types/uuid": "^8.3.4",
+    "@types/yargs": "^17.0.10",
+    "aws-sdk": "^2.1126.0",
+    "esbuild-jest": "^0.5.0",
+    "exec-sh": "^0.4.0",
+    "jest": "^27.5.1",
+    "md5-file": "^5.0.0",
+    "serverless": "^2.72.3",
+    "serverless-esbuild": "^1.26.2",
+    "type-fest": "^2.12.2",
+    "typescript": "^4.6.4",
+    "yargs": "^17.4.1"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "packages": ["clients/*", "packages/*", "services/*", "guardian/*", "cli/*"],
+  "version": "0.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}

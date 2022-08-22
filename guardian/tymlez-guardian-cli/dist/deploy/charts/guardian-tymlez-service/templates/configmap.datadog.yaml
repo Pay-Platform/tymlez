@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "guardian-tymlez-service.fullname" . }}-datadog-{{ .Release.Revision }}
+  namespace: {{ .Values.namespace }}
+data:
+  {{- toYaml .Values.configmap.datadog | nindent 2 }}
+  DD_ENV: {{ .Values.configmap.data.ENV_NAME }}
+  DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
+  DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+  DD_APM_NON_LOCAL_TRAFFIC: "true"
+  DD_SITE: datadoghq.com
+  DD_LOGS_ENABLED: "true"
+  DD_APM_ENABLED: "true"
+  DD_HEALTH_PORT: "8899"

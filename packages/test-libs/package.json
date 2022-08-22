@@ -1,0 +1,11 @@
+{
+  "name": "@tymlez/test-libs",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "rm -rf coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.33",
+    "typescript": "^4.6.4"
+  }
+}

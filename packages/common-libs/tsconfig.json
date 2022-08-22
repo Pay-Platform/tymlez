@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "exclude": ["node_modules", "coverage", "dist"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmit": false,
+    "allowJs": false,
+    "checkJs": false,
+    "composite": true,
+    "baseUrl": "./"
+  },
+  "references": [{ "path": "../platform-api-interfaces" }],
+  "include": ["src"]
+}

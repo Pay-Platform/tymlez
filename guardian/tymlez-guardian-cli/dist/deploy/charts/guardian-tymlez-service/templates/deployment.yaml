@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "guardian-tymlez-service.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "guardian-tymlez-service.labels" . | nindent 4 }}
+    {{- include "guardian-tymlez-service.dd_labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "guardian-tymlez-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "guardian-tymlez-service.selectorLabels" . | nindent 8 }}
+        {{- include "guardian-tymlez-service.dd_labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:   
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: p3010
+              containerPort: 3010
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: p3010
+            timeoutSeconds: 30
+            failureThreshold: 5
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /info
+              port: p3010
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "guardian-tymlez-service.fullname" . }}-{{ .Release.Revision }}
+        - name: {{ .Chart.Name }}-dd-agent
+          securityContext:   
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "gcr.io/datadoghq/agent"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: p8899
+              containerPort: 8899
+              protocol: TCP
+            - name: p8126
+              containerPort: 8126
+              protocol: TCP
+            - name: p8125
+              containerPort: 8125
+              protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: p8899
+            timeoutSeconds: 30
+            failureThreshold: 5
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: p8899
+            initialDelaySeconds: 30
+            periodSeconds: 20
+         
+          envFrom:
+            - configMapRef:
+                name: {{ include "guardian-tymlez-service.fullname" . }}-datadog-{{ .Release.Revision }}
+          # volumeMounts:
+          #   - name: pointdir
+          #     mountPath: /opt/datadog-agent/run
+          #   - name: logpodpath
+          #     mountPath: /var/log/pods
+          #   - name: logcontainerpath
+          #     mountPath: /var/lib/docker/containers
+      # volumes:
+      #   - hostPath:
+      #       path: /opt/datadog-agent/run
+      #     name: pointdir
+      #   - hostPath:
+      #       path: /var/log/pods
+      #     name: logpodpath
+      #   - hostPath:
+      #       path: /var/lib/docker/containers
+      #     name: logcontainerpath
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
